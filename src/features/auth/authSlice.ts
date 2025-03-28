@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { signIn } from './authSlice-actions';
+import { signInAction } from './authSlice-actions';
 import { RootState } from '../../app/store';
 
 type User = {
@@ -28,7 +28,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(signIn.fulfilled, (state, action) => {
+    builder.addCase(signInAction.fulfilled, (state, action) => {
       state.token = action.payload.token;
       state.user = action.payload.user;
     });

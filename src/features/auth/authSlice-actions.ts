@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { SignInParams } from '../../api/auth';
 
-export const signIn = createAsyncThunk(
+export const signInAction = createAsyncThunk(
   'auth/sign-in',
   async ({ email, password }: SignInParams, { extra, rejectWithValue }) => {
     try {
