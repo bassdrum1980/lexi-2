@@ -1,28 +1,27 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signInAction } from "../../features/auth/authSlice-actions";
-import { selectToken } from "../../features/auth/authSlice";
-import type { AppDispatch } from "../../app/store";
+import { useSignInMutation } from "../../services/lexiApiSlice";
 import SignInForm from "../../features/auth/SignInForm";
+import { selectIsAuthenticated } from "../../features/auth/authSlice";
 
 export type handleSubmitType = (event: React.FormEvent<HTMLFormElement>, email: string, password: string) => void;
 
 function SignInPage() {
-  const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const token = useSelector(selectToken);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const [signIn] = useSignInMutation();
 
   const handleSubmit: handleSubmitType = (event, email, password) => {
     event.preventDefault();
-    dispatch(signInAction({ email, password }));
+    signIn({ email, password })
   };
 
   useEffect(() => {
-    if (token) {
+    if (isAuthenticated) {
       navigate('/');
     }
-  }, [token]);
+  }, [isAuthenticated, navigate]);
 
   return (
     <SignInForm handleSubmit={handleSubmit} />

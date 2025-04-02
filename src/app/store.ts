@@ -1,7 +1,7 @@
 import logger from 'redux-logger';
 import { configureStore, type Middleware } from '@reduxjs/toolkit';
-import * as authApi from '../api/auth';
 import authReducer from '../features/auth/authSlice';
+import { lexiApi } from '../services/lexiApiSlice';
 
 const middleware: Middleware[] = [];
 if (import.meta.env.MODE === 'development') {
@@ -10,14 +10,11 @@ if (import.meta.env.MODE === 'development') {
 
 export const store = configureStore({
   reducer: {
+    [lexiApi.reducerPath]: lexiApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      thunk: {
-        extraArgument: { authApi }, // Provide authApi as an extra argument
-      },
-    }).concat(middleware),
+    getDefaultMiddleware().concat(middleware).concat(lexiApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
