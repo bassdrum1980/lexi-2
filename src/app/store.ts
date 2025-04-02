@@ -2,6 +2,7 @@ import logger from 'redux-logger';
 import { configureStore, type Middleware } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import { lexiApi } from '../services/lexiApiSlice';
+import { authListenerMiddleware } from '../middleware/authListener';
 
 const middleware: Middleware[] = [];
 if (import.meta.env.MODE === 'development') {
@@ -14,7 +15,10 @@ export const store = configureStore({
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middleware).concat(lexiApi.middleware),
+    getDefaultMiddleware()
+      .concat(middleware)
+      .concat(lexiApi.middleware)
+      .prepend(authListenerMiddleware.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
