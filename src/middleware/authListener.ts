@@ -1,5 +1,5 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { signOut } from '../features/auth/authSlice';
+import { setToken, signOut } from '../features/auth/authSlice';
 import { lexiApi } from '../services/lexiApiSlice';
 import {
   setTokenToLocalStorage,
@@ -23,5 +23,14 @@ authListenerMiddleware.startListening({
   actionCreator: signOut,
   effect: () => {
     removeTokenFromLocalStorage();
+  },
+});
+
+authListenerMiddleware.startListening({
+  actionCreator: setToken,
+  effect: (action, listenerApi) => {
+    if (action.payload === null) {
+      listenerApi.dispatch(signOut());
+    }
   },
 });
