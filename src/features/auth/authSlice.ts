@@ -33,6 +33,10 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
     },
+    setToken: (state, action) => {
+      state.token = action.payload;
+      state.isAuthenticated = !!action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -46,7 +50,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { signOut } = authSlice.actions;
+export const { signOut, setToken } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectToken = (state: RootState) => state.auth.token;

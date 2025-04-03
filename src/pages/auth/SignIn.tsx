@@ -10,7 +10,7 @@ export type handleSubmitType = (event: React.FormEvent<HTMLFormElement>, email: 
 function SignInPage() {
   const navigate = useNavigate();
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  const [signIn] = useSignInMutation();
+  const [signIn, { isLoading }] = useSignInMutation();
 
   const handleSubmit: handleSubmitType = (event, email, password) => {
     event.preventDefault();
@@ -22,6 +22,10 @@ function SignInPage() {
       navigate('/');
     }
   }, [isAuthenticated, navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <SignInForm handleSubmit={handleSubmit} />
