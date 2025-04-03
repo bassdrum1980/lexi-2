@@ -23,3 +23,7 @@ export const setTokenToLocalStorage = (token: string) => {
 export const removeTokenFromLocalStorage = () => {
   localStorage.removeItem('token');
 };
+
+export const validateToken = (token: string | null) => {
+  return token && !isTokenExpired(token) ? token : null;
+};

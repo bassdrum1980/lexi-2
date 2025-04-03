@@ -4,6 +4,7 @@ import { lexiApi } from '../services/lexiApiSlice';
 import {
   setTokenToLocalStorage,
   removeTokenFromLocalStorage,
+  validateToken,
 } from '../utils/auth';
 
 export const authListenerMiddleware = createListenerMiddleware();
@@ -11,7 +12,10 @@ export const authListenerMiddleware = createListenerMiddleware();
 authListenerMiddleware.startListening({
   matcher: lexiApi.endpoints.signIn.matchFulfilled,
   effect: (action) => {
-    setTokenToLocalStorage(action.payload.token);
+    const token = validateToken(action.payload.token);
+    if (token !== null) {
+      setTokenToLocalStorage(action.payload.token);
+    }
   },
 });
 

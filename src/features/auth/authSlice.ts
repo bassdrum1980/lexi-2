@@ -2,20 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { User } from '../../types/user';
 import { RootState } from '../../app/store';
 import { lexiApi } from '../../services/lexiApiSlice';
-import { isTokenExpired, getTokenFromLocalStorage } from '../../utils/auth';
+import { getTokenFromLocalStorage, validateToken } from '../../utils/auth';
 
 interface AuthState {
   user: User | null;
   token: string | null;
-  isAuthenticated: boolean;
 }
 
 const token = getTokenFromLocalStorage();
 
 const initialState: AuthState = {
   user: null,
-  token,
-  isAuthenticated: token === null ? false : isTokenExpired(token),
+  token: validateToken(token),
 };
 
 const authSlice = createSlice({
@@ -25,20 +23,19 @@ const authSlice = createSlice({
     signOut: (state) => {
       state.user = null;
       state.token = null;
-      state.isAuthenticated = false;
     },
     setToken: (state, action) => {
-      state.token = action.payload;
-      state.isAuthenticated = !!action.payload;
+      const token = action.payload;
+      state.token = validateToken(token);
     },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
       lexiApi.endpoints.signIn.matchFulfilled,
       (state, payload) => {
-        state.token = payload.payload.token;
+        const token = payload.payload.token;
+        state.token = validateToken(token);
         state.user = payload.payload.user;
-        state.isAuthenticated = true;
       }
     );
   },
@@ -47,8 +44,6 @@ const authSlice = createSlice({
 export const { signOut, setToken } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.user;
-export const selectToken = (state: RootState) => state.auth.token;
-export const selectIsAuthenticated = (state: RootState) =>
-  state.auth.isAuthenticated;
+export const selectIsAuthenticated = (state: RootState) => !!state.auth.token;
 
 export default authSlice.reducer;
