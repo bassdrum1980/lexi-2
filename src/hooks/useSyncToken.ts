@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setToken, signOut } from '../features/auth/authSlice';
+import { setToken } from '../features/auth/authSlice';
 
 const useSyncToken = () => {
   const dispatch = useDispatch();
@@ -8,11 +8,7 @@ const useSyncToken = () => {
   useEffect(() => {
     const syncToken = (event: StorageEvent) => {
       if (event.key === 'token') {
-        if (event.newValue) {
-          dispatch(setToken(event.newValue));
-        } else {
-          dispatch(signOut());
-        }
+        dispatch(setToken(event.newValue));
       }
     };
 
