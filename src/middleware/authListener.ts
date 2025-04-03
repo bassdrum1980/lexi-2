@@ -1,19 +1,23 @@
 import { createListenerMiddleware } from '@reduxjs/toolkit';
 import { signOut } from '../features/auth/authSlice';
 import { lexiApi } from '../services/lexiApiSlice';
+import {
+  setTokenToLocalStorage,
+  removeTokenFromLocalStorage,
+} from '../utils/auth';
 
 export const authListenerMiddleware = createListenerMiddleware();
 
 authListenerMiddleware.startListening({
-  actionCreator: signOut,
-  effect: async () => {
-    localStorage.removeItem('token');
+  matcher: lexiApi.endpoints.signIn.matchFulfilled,
+  effect: (action) => {
+    setTokenToLocalStorage(action.payload.token);
   },
 });
 
 authListenerMiddleware.startListening({
-  matcher: lexiApi.endpoints.signIn.matchFulfilled,
-  effect: async (action) => {
-    localStorage.setItem('token', action.payload.token);
+  actionCreator: signOut,
+  effect: () => {
+    removeTokenFromLocalStorage();
   },
 });

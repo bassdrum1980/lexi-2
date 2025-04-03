@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { User } from '../../types/user';
 import { RootState } from '../../app/store';
 import { lexiApi } from '../../services/lexiApiSlice';
-import { isTokenExpired } from '../../utils/auth';
+import { isTokenExpired, getTokenFromLocalStorage } from '../../utils/auth';
 
 interface AuthState {
   user: User | null;
@@ -10,18 +10,12 @@ interface AuthState {
   isAuthenticated: boolean;
 }
 
-const getTokenFromLocalStorage = () => {
-  const token = localStorage.getItem('token');
-  if (token && !isTokenExpired(token)) {
-    return token;
-  }
-  return null;
-};
+const token = getTokenFromLocalStorage();
 
 const initialState: AuthState = {
   user: null,
-  token: getTokenFromLocalStorage(),
-  isAuthenticated: !!getTokenFromLocalStorage(),
+  token,
+  isAuthenticated: token === null ? false : isTokenExpired(token),
 };
 
 const authSlice = createSlice({

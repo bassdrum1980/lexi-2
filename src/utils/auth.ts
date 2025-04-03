@@ -1,13 +1,25 @@
 import { jwtDecode } from 'jwt-decode';
 
 export const isTokenExpired = (token: string) => {
-  if (!token) return true; // No token = expired
   try {
     const { exp } = jwtDecode(token);
-    if (exp === undefined) return true; // No expiration time = treat as expired
-    return exp * 1000 < Date.now(); // Expiry time is in seconds (Unix origin), convert to ms
+    if (exp === undefined) return true;
+    return exp * 1000 < Date.now();
   } catch (error) {
     console.error('Token decoding error:', error);
-    return true; // Invalid token = treat as expired
+    return true;
   }
+};
+
+export const getTokenFromLocalStorage = () => {
+  const token = localStorage.getItem('token');
+  return token;
+};
+
+export const setTokenToLocalStorage = (token: string) => {
+  localStorage.setItem('token', token);
+};
+
+export const removeTokenFromLocalStorage = () => {
+  localStorage.removeItem('token');
 };
