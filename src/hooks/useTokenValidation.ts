@@ -16,9 +16,7 @@ const useTokenValidation = () => {
     if (remainingTimeMs <= 0) {
       dispatch(signOut());
     } else {
-      console.log(`Token will expire in ${remainingTimeMs} ms`);
       timeoutId = setTimeout(() => {
-        console.log('Token expired, signing out...');
         dispatch(signOut());
       }, remainingTimeMs);
     }
