@@ -4,6 +4,8 @@ import { isTokenExpired } from '../../auth';
 import {
   MOCK_CURRENT_DATE,
   MOCK_CURRENT_TIMESTAMP_SEC,
+  MOCK_FUTURE_TIMESTAMP_SEC,
+  MOCK_PAST_TIMESTAMP_SEC,
 } from './setup';
 
 // Init module mock
@@ -29,7 +31,7 @@ describe('isTokenExpired', () => {
   describe('when the token is valid', () => {
     it('should return false for a token that expires in the future', () => {
       // Arrange: Set up the mock to return a future expiration time
-      const futureExpSeconds = MOCK_CURRENT_TIMESTAMP_SEC + 3600; // Expires in 1 hour
+      const futureExpSeconds = MOCK_FUTURE_TIMESTAMP_SEC; // Expires in 1 hour
       mockedJwtDecode.mockReturnValue({ exp: futureExpSeconds } as JwtPayload);
       const token = 'valid-token-not-expired';
 
@@ -60,7 +62,7 @@ describe('isTokenExpired', () => {
   describe('when the token is invalid', () => {
     it('should return true for a token that has already expired', () => {
       // Arrange: Set up the mock to return a past expiration time
-      const pastExpSeconds = MOCK_CURRENT_TIMESTAMP_SEC - 3600; // Expired 1 hour ago
+      const pastExpSeconds = MOCK_PAST_TIMESTAMP_SEC; // Expired 1 hour ago
       mockedJwtDecode.mockReturnValue({ exp: pastExpSeconds } as JwtPayload);
       const token = 'valid-token-expired';
 
