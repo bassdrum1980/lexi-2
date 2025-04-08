@@ -1,16 +1,16 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { validateToken, isTokenExpired } from '../../auth';
-import { MOCK_CURRENT_DATE } from './setup';
+import { jwtDecode, type JwtPayload } from 'jwt-decode';
+import { validateToken } from '../../auth';
+import {
+  MOCK_CURRENT_DATE,
+  MOCK_FUTURE_TIMESTAMP_SEC,
+  MOCK_PAST_TIMESTAMP_SEC,
+} from './setup';
 
-vi.mock('../../auth', async () => {
-  const actual = await vi.importActual('../../auth');
-  return {
-    ...actual,
-    isTokenExpired: vi.fn(),
-  };
-});
-
-const mockedIsTokenExpired = vi.mocked(isTokenExpired);
+// Init module mock
+vi.mock('jwt-decode');
+// Get typed mock function reference
+const mockedJwtDecode = vi.mocked(jwtDecode);
 
 describe('validateToken', () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ describe('validateToken', () => {
     // Set the "current" time for Date.now()
     vi.setSystemTime(MOCK_CURRENT_DATE);
     // Reset any previous mock implementations/return values
-    mockedIsTokenExpired.mockReset();
+    mockedJwtDecode.mockReset();
   });
 
   afterEach(() => {
@@ -30,15 +30,49 @@ describe('validateToken', () => {
   describe('when the token is valid', () => {
     it('should return the token when it is not expired', () => {
       // Arrange
+      const futureExpSeconds = MOCK_FUTURE_TIMESTAMP_SEC; // Expires in 1 hour
+      mockedJwtDecode.mockReturnValue({
+        exp: futureExpSeconds,
+      } as JwtPayload);
+
       const validToken = 'valid-not-expired-token';
-      mockedIsTokenExpired.mockReturnValue(false);
 
       // Act
       const result = validateToken(validToken);
 
       // Assert
       expect(result).toBe(validToken); // Uncommented this assertion
-      expect(mockedIsTokenExpired).toHaveBeenCalledWith(validToken);
+      expect(mockedJwtDecode).toHaveBeenCalledWith(validToken);
+    });
+  });
+
+  describe('when the token is not valid', () => {
+    it('should return null when the token is expired', () => {
+      // Arrange
+      const pastExpSeconds = MOCK_PAST_TIMESTAMP_SEC; // Expired 1 hour ago
+      mockedJwtDecode.mockReturnValue({
+        exp: pastExpSeconds,
+      } as JwtPayload);
+      const token = 'valid-token-expired';
+
+      // Act
+      const result = validateToken(token);
+
+      // Assert
+      expect(result).toBeNull();
+      expect(mockedJwtDecode).toHaveBeenCalledWith(token);
+    });
+
+    it('should return null when the token is null', () => {
+      // Arrange
+      const nullToken = null;
+
+      // Act
+      const result = validateToken(nullToken);
+
+      // Assert
+      expect(result).toBeNull();
+      expect(mockedJwtDecode).not.toHaveBeenCalled();
     });
   });
 });
