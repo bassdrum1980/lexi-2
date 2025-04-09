@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { useDispatch, useSelector } from 'react-redux';
 import useTokenValidation from '../useTokenValidation';
 import { getTokenExpirationTimeMs } from '../../utils/auth';
-import { selectToken, signOut } from '../../features/auth/authSlice';
+import { signOut } from '../../features/auth/authSlice';
 
 // --- Mock Dependencies ---
 vi.mock('react-redux', () => ({
@@ -34,8 +34,6 @@ describe('useTokenValidation', () => {
     mockGetTokenExpirationTimeMs = getTokenExpirationTimeMs as unknown as Mock;
     mockSignOut = signOut as unknown as Mock;
     mockUseDispatch = useDispatch as unknown as Mock;
-
-    // Assign mocks from the mocked modules
     mockUseDispatch.mockReturnValue(mockDispatch);
 
     // Enable fake timers
@@ -104,14 +102,14 @@ describe('useTokenValidation', () => {
     const remainingTimeMs = 5000;
     mockUseSelector.mockReturnValue(token);
     mockGetTokenExpirationTimeMs.mockReturnValue(remainingTimeMs);
+    const { unmount } = renderHook(() => useTokenValidation());
 
     // Act
     vi.useFakeTimers(); // Use fake timers to control setTimeout
-    const { unmount } = renderHook(() => useTokenValidation());
     unmount();
     vi.advanceTimersByTime(remainingTimeMs); // Fast-forward time to trigger the timeout
 
     // Assert
-    expect(mockDispatch).not.toHaveBeenCalled(); // Timeout should have been cleared
+    expect(mockDispatch).not.toHaveBeenCalled();
   });
 });
