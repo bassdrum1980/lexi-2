@@ -6,6 +6,7 @@ const useSyncToken = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Sync token with local storage across tabs
     const syncToken = (event: StorageEvent) => {
       if (event.key === 'token') {
         dispatch(setToken(event.newValue));
