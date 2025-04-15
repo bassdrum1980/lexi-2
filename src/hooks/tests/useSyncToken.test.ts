@@ -9,13 +9,13 @@ import {
   Mock,
   MockInstance,
 } from 'vitest';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../app/hooks';
 import useSyncToken from '../useSyncToken';
 import { setToken } from '../../features/auth/authSlice';
 
 // --- Mock Dependencies ---
-vi.mock('react-redux', () => ({
-  useDispatch: vi.fn(),
+vi.mock('../../app/hooks', () => ({
+  useAppDispatch: vi.fn(),
 }));
 
 vi.mock('../../features/auth/authSlice', () => ({
@@ -33,7 +33,7 @@ describe('useSyncToken', () => {
 
   beforeEach(() => {
     // Assign mocks from the mocked modules
-    mockUseDispatch = useDispatch as unknown as Mock;
+    mockUseDispatch = useAppDispatch as unknown as Mock;
     mockUseDispatch.mockReturnValue(mockDispatch);
 
     // Assign spies

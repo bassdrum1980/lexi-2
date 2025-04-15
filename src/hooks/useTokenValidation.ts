@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../app/hooks';
 import { signOut, selectToken } from '../features/auth/authSlice';
 import { getTokenExpirationTimeMs } from '../utils/auth';
 
 const useTokenValidation = () => {
-  const dispatch = useDispatch();
-  const token = useSelector(selectToken);
+  const dispatch = useAppDispatch();
+  const token = useAppSelector(selectToken);
 
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;

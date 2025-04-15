@@ -1,7 +1,7 @@
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "../../app/hooks";
 
 function HomePage() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleSignout = () => {
     dispatch({ type: "auth/signOut" });

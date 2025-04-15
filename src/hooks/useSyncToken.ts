@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../app/hooks';
 import { setToken } from '../features/auth/authSlice';
 
 const useSyncToken = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     // Sync token with local storage across tabs

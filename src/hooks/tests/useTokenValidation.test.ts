@@ -1,14 +1,14 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import useTokenValidation from '../useTokenValidation';
 import { getTokenExpirationTimeMs } from '../../utils/auth';
 import { signOut } from '../../features/auth/authSlice';
 
 // --- Mock Dependencies ---
-vi.mock('react-redux', () => ({
-  useDispatch: vi.fn(),
-  useSelector: vi.fn(),
+vi.mock('../../app/hooks', () => ({
+  useAppDispatch: vi.fn(),
+  useAppSelector: vi.fn(),
 }));
 
 vi.mock('../../utils/auth', () => ({
@@ -30,10 +30,10 @@ describe('useTokenValidation', () => {
 
   beforeEach(() => {
     // Assign mocks from the mocked modules
-    mockUseSelector = useSelector as unknown as Mock;
+    mockUseSelector = useAppSelector as unknown as Mock;
     mockGetTokenExpirationTimeMs = getTokenExpirationTimeMs as unknown as Mock;
     mockSignOut = signOut as unknown as Mock;
-    mockUseDispatch = useDispatch as unknown as Mock;
+    mockUseDispatch = useAppDispatch as unknown as Mock;
     mockUseDispatch.mockReturnValue(mockDispatch);
 
     // Enable fake timers
