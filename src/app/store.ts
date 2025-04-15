@@ -1,5 +1,9 @@
 import logger from 'redux-logger';
-import { configureStore, type Middleware } from '@reduxjs/toolkit';
+import {
+  combineReducers,
+  configureStore,
+  type Middleware,
+} from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import { lexiApi } from '../services/lexiApiSlice';
 import { authListenerMiddleware } from '../middleware/authListener';
@@ -9,17 +13,28 @@ if (import.meta.env.MODE === 'development') {
   middleware.push(logger);
 }
 
-export const store = configureStore({
-  reducer: {
-    [lexiApi.reducerPath]: lexiApi.reducer,
-    auth: authReducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .concat(middleware)
-      .concat(lexiApi.middleware)
-      .prepend(authListenerMiddleware.middleware),
+// Create the root reducer independently to obtain the RootState type
+const rootReducer = combineReducers({
+  [lexiApi.reducerPath]: lexiApi.reducer,
+  auth: authReducer,
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+// Function to create and configure the store
+export function setupStore(preloadedState?: Partial<RootState>) {
+  return configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware()
+        .concat(middleware)
+        .concat(lexiApi.middleware)
+        .prepend(authListenerMiddleware.middleware),
+    preloadedState,
+  });
+}
+
+// Default store instance
+export const store = setupStore();
+
+export type AppStore = ReturnType<typeof setupStore>;
+export type RootState = ReturnType<typeof rootReducer>;
 export type AppDispatch = typeof store.dispatch;
