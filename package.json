@@ -39,6 +39,7 @@
     "globals": "^15.15.0",
     "jsdom": "^26.0.0",
     "jwt-decode": "^4.0.0",
+    "msw": "^2.7.4",
     "redux-logger": "^3.0.6",
     "sass": "^1.86.0",
     "typescript": "~5.7.2",
