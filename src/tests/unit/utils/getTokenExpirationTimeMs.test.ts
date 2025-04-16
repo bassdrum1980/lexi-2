@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { jwtDecode, type JwtPayload } from 'jwt-decode';
-import { getTokenExpirationTimeMs } from '../../auth';
+import { getTokenExpirationTimeMs } from '../../../utils/auth';
 import {
   MOCK_CURRENT_DATE,
   MOCK_CURRENT_TIMESTAMP_SEC,

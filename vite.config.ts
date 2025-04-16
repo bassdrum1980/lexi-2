@@ -11,11 +11,13 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
     css: true,
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/tests/**/*.test.{ts,tsx}'],
     exclude: ['node_modules', 'dist'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{ts,tsx}'],
+      exclude: ['src/**/*.test.{ts,tsx}', 'src/setupTests.ts'],
     },
   },
 });

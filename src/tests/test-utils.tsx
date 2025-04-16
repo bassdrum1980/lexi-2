@@ -8,8 +8,8 @@ import type { AppStore, RootState } from '../app/store';
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  preloadedState?: Partial<RootState>
-  store?: AppStore
+  preloadedState?: Partial<RootState>;
+  store?: AppStore;
 }
 
 export function renderWithProviders(
@@ -22,7 +22,7 @@ export function renderWithProviders(
   }: ExtendedRenderOptions = {}
 ) {
   function Wrapper({ children }: PropsWithChildren<object>): JSX.Element {
-    return <Provider store={store}>{children}</Provider>
+    return <Provider store={store}>{children}</Provider>;
   }
-  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
+  return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
 }

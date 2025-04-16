@@ -2,20 +2,20 @@ import { Mock } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { screen } from '@testing-library/react';
 // We're using our own custom render function and not RTL's render.
-import { renderWithProviders } from '../utils/test-utils.tsx';
-import { AppRoutes } from '../AppRoutes.tsx';
-import { signinURL } from '../routes/index.ts';
-import { getTokenExpirationTimeMs } from '../utils/auth.ts';
+import { renderWithProviders } from '../test-utils.tsx';
+import { AppRoutes } from '../../routes/AppRoutes.tsx';
+import { signinURL } from '../../routes/index.ts';
+import { getTokenExpirationTimeMs } from '../../utils/auth.ts';
 
 // Mocking the getTokenExpirationTimeMs function so that the useTokenValidation hook
 // won't immediately sign out the user when the token is expired.
-vi.mock(import("../utils/auth"), async (importOriginal) => {
-  const actual = await importOriginal()
+vi.mock(import('../../utils/auth.ts'), async (importOriginal) => {
+  const actual = await importOriginal();
   return {
     ...actual,
     getTokenExpirationTimeMs: vi.fn(),
-  }
-})
+  };
+});
 
 describe('when the user is unauthenticated', () => {
   test('renders Sign in page for unauthenticated user at root', async () => {

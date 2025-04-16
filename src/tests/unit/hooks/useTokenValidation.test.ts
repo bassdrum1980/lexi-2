@@ -1,21 +1,21 @@
 import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
-import { useAppDispatch, useAppSelector } from '../../app/hooks';
-import useTokenValidation from '../useTokenValidation';
-import { getTokenExpirationTimeMs } from '../../utils/auth';
-import { signOut } from '../../features/auth/authSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import useTokenValidation from '../../../hooks/useTokenValidation';
+import { getTokenExpirationTimeMs } from '../../../utils/auth';
+import { signOut } from '../../../features/auth/authSlice';
 
 // --- Mock Dependencies ---
-vi.mock('../../app/hooks', () => ({
+vi.mock('../../../app/hooks', () => ({
   useAppDispatch: vi.fn(),
   useAppSelector: vi.fn(),
 }));
 
-vi.mock('../../utils/auth', () => ({
+vi.mock('../../../utils/auth', () => ({
   getTokenExpirationTimeMs: vi.fn(),
 }));
 
-vi.mock('../../features/auth/authSlice', () => ({
+vi.mock('../../../features/auth/authSlice', () => ({
   signOut: vi.fn(),
   selectToken: vi.fn(),
 }));

@@ -9,16 +9,16 @@ import {
   Mock,
   MockInstance,
 } from 'vitest';
-import { useAppDispatch } from '../../app/hooks';
-import useSyncToken from '../useSyncToken';
-import { setToken } from '../../features/auth/authSlice';
+import { useAppDispatch } from '../../../app/hooks';
+import useSyncToken from '../../../hooks/useSyncToken';
+import { setToken } from '../../../features/auth/authSlice';
 
 // --- Mock Dependencies ---
-vi.mock('../../app/hooks', () => ({
+vi.mock('../../../app/hooks', () => ({
   useAppDispatch: vi.fn(),
 }));
 
-vi.mock('../../features/auth/authSlice', () => ({
+vi.mock('../../../features/auth/authSlice', () => ({
   setToken: vi.fn(),
 }));
 

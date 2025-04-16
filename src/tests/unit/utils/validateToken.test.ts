@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { jwtDecode, type JwtPayload } from 'jwt-decode';
-import { validateToken } from '../../auth';
+import { validateToken } from '../../../utils/auth';
 import {
   MOCK_CURRENT_DATE,
   MOCK_FUTURE_TIMESTAMP_SEC,
