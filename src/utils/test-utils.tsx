@@ -4,8 +4,6 @@ import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { setupStore } from '../app/store';
 import type { AppStore, RootState } from '../app/store';
-import { MemoryRouter } from 'react-router';
-import { AppRoutes } from '../AppRoutes';
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
@@ -27,13 +25,4 @@ export function renderWithProviders(
     return <Provider store={store}>{children}</Provider>
   }
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) }
-}
-
-export function renderWithProvidersWrapper(initialEntries: string[], preloadedState: Partial<RootState>) {
-  return renderWithProviders(
-    <MemoryRouter initialEntries={initialEntries}>
-      <AppRoutes />
-    </MemoryRouter>,
-    { preloadedState }
-  );
 }
