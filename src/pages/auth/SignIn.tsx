@@ -24,11 +24,13 @@ function SignInPage() {
   }, [isAuthenticated, navigate]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div data-testId="signin-page"><div>Loading...</div></div>;
   }
 
   return (
-    <SignInForm handleSubmit={handleSubmit} />
+    <div data-testId="signin-page">
+      <SignInForm handleSubmit={handleSubmit} />
+    </div>
   );
 };
 

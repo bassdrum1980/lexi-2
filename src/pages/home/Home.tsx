@@ -8,7 +8,7 @@ function HomePage() {
   }
 
   return (
-    <div>
+    <div data-testid="home-page">
       <h2>Home</h2>
       <button onClick={handleSignout}>Sign out</button>
     </div>

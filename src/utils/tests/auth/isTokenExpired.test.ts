@@ -8,7 +8,7 @@ import {
   MOCK_PAST_TIMESTAMP_SEC,
 } from './setup';
 
-// Init module mock
+// --- Mock Dependencies ---
 vi.mock('jwt-decode');
 // Get typed mock function reference
 const mockedJwtDecode = vi.mocked(jwtDecode);
