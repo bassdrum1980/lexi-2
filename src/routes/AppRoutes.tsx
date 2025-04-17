@@ -22,7 +22,7 @@ export const AppRoutes = () => {
 
         {/* Public Routes */}
         <Route
-          path={signinURL} // e.g., '/signin'
+          path={signinURL}
           element={<SignInPage />}
         />
       </Route>

@@ -1,11 +1,15 @@
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useSignInMutation } from "../../services/lexiApiSlice";
-import SignInForm from "../../features/auth/SignInForm";
-import { selectIsAuthenticated } from "../../features/auth/authSlice";
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useSignInMutation } from '../../services/lexiApiSlice';
+import SignInForm from '../../features/auth/SignInForm';
+import { selectIsAuthenticated } from '../../features/auth/authSlice';
 
-export type handleSubmitType = (event: React.FormEvent<HTMLFormElement>, email: string, password: string) => void;
+export type handleSubmitType = (
+  event: React.FormEvent<HTMLFormElement>,
+  email: string,
+  password: string
+) => void;
 
 function SignInPage() {
   const navigate = useNavigate();
@@ -14,7 +18,7 @@ function SignInPage() {
 
   const handleSubmit: handleSubmitType = (event, email, password) => {
     event.preventDefault();
-    signIn({ email, password })
+    signIn({ email, password });
   };
 
   useEffect(() => {
@@ -24,14 +28,18 @@ function SignInPage() {
   }, [isAuthenticated, navigate]);
 
   if (isLoading) {
-    return <div data-testId="signin-page"><div>Loading...</div></div>;
+    return (
+      <div data-testid="signin-page">
+        <div>Loading...</div>
+      </div>
+    );
   }
 
   return (
-    <div data-testId="signin-page">
+    <div data-testid="signin-page">
       <SignInForm handleSubmit={handleSubmit} />
     </div>
   );
-};
+}
 
 export default SignInPage;
