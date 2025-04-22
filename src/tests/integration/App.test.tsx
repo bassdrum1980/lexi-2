@@ -5,6 +5,7 @@ import { renderWithProviders } from '../test-utils.tsx';
 import { AppRoutes } from '../../routes/AppRoutes.tsx';
 import { signinURL } from '../../routes/index.ts';
 import { getTokenExpirationTimeMs } from '../../utils/auth.ts';
+import { removeTokenFromLocalStorage } from '../../utils/auth.ts';
 
 describe('when the user is unauthenticated', () => {
   it('renders Sign in page for unauthenticated user at root', async () => {
@@ -174,7 +175,6 @@ describe('when the user is authenticated', () => {
     act(() => {
       vi.advanceTimersByTime(remainingTimeMs); // Fast-forward time to trigger the timeout
     });
-
     const page = screen.getByTestId(expectedPage);
 
     // Assert
@@ -183,5 +183,46 @@ describe('when the user is authenticated', () => {
 
     // Clean up
     vi.useRealTimers();
+  });
+
+  it('redirects user to sign in after sign out in another tab', async () => {
+    const remainingTimeMs = 100000;
+    const token = 'fake-token';
+    const initialPath = '/';
+    const expectedPage = 'signin-page';
+
+    // Arrange
+    mockGetTokenExpirationTimeMs.mockReturnValue(remainingTimeMs); // Set token expiration in 100 seconds
+    renderWithProviders(
+      <MemoryRouter initialEntries={[initialPath]}>
+        <AppRoutes />
+      </MemoryRouter>,
+      {
+        // Provide authenticated state
+        preloadedState: {
+          auth: {
+            user: null,
+            token,
+          },
+        },
+      }
+    );
+
+    // Act
+    act(() => {
+      // Simulate sign out in another tab by removing the token from localStorage
+      // and dispatching a storage event manually (because this is the same window)
+      removeTokenFromLocalStorage();
+      window.dispatchEvent(
+        new StorageEvent('storage', {
+          key: 'token',
+          newValue: null,
+        })
+      );
+    });
+    const page = screen.getByTestId(expectedPage);
+
+    // Assert
+    expect(page).toBeInTheDocument();
   });
 });
