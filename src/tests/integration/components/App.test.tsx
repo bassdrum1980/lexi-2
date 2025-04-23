@@ -1,11 +1,11 @@
 import { Mock } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { act, screen } from '@testing-library/react';
-import { renderWithProviders } from '../test-utils.tsx';
-import { AppRoutes } from '../../routes/AppRoutes.tsx';
-import { signinURL } from '../../routes/index.ts';
-import { getTokenExpirationTimeMs } from '../../utils/auth.ts';
-import { removeTokenFromLocalStorage } from '../../utils/auth.ts';
+import { renderWithProviders } from '../../test-utils.tsx';
+import { AppRoutes } from '../../../routes/AppRoutes.tsx';
+import { signinURL } from '../../../routes/index.ts';
+import { getTokenExpirationTimeMs } from '../../../utils/auth.ts';
+import { removeTokenFromLocalStorage } from '../../../utils/auth.ts';
 
 describe('when the user is unauthenticated', () => {
   it('renders Sign in page for unauthenticated user at root', async () => {
@@ -65,7 +65,7 @@ describe('when the user is unauthenticated', () => {
 
 describe('when the user is authenticated', () => {
   // --- Mock Dependencies ---
-  vi.mock(import('../../utils/auth.ts'), async (importOriginal) => {
+  vi.mock(import('../../../utils/auth.ts'), async (importOriginal) => {
     const actual = await importOriginal();
     return {
       ...actual,
