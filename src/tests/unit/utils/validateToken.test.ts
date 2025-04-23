@@ -6,6 +6,7 @@ import {
   MOCK_FUTURE_TIMESTAMP_SEC,
   MOCK_PAST_TIMESTAMP_SEC,
 } from './setup';
+import { FAKE_TOKEN } from '../../mocks/data/auth';
 
 // Init module mock
 vi.mock('jwt-decode');
@@ -29,31 +30,32 @@ describe('validateToken', () => {
 
   describe('when the token is valid', () => {
     it('should return the token when it is not expired', () => {
+      const token = FAKE_TOKEN;
+
       // Arrange
       const futureExpSeconds = MOCK_FUTURE_TIMESTAMP_SEC; // Expires in 1 hour
       mockedJwtDecode.mockReturnValue({
         exp: futureExpSeconds,
       } as JwtPayload);
 
-      const validToken = 'valid-not-expired-token';
-
       // Act
-      const result = validateToken(validToken);
+      const result = validateToken(token);
 
       // Assert
-      expect(result).toBe(validToken); // Uncommented this assertion
-      expect(mockedJwtDecode).toHaveBeenCalledWith(validToken);
+      expect(result).toBe(token); // Uncommented this assertion
+      expect(mockedJwtDecode).toHaveBeenCalledWith(token);
     });
   });
 
   describe('when the token is not valid', () => {
     it('should return null when the token is expired', () => {
+      const token = FAKE_TOKEN;
+
       // Arrange
       const pastExpSeconds = MOCK_PAST_TIMESTAMP_SEC; // Expired 1 hour ago
       mockedJwtDecode.mockReturnValue({
         exp: pastExpSeconds,
       } as JwtPayload);
-      const token = 'valid-token-expired';
 
       // Act
       const result = validateToken(token);

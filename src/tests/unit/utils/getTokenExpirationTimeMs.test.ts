@@ -8,6 +8,7 @@ import {
   MOCK_PAST_TIMESTAMP_SEC,
   ONE_HOUR_IN_MS,
 } from './setup';
+import { FAKE_TOKEN } from '../../mocks/data/auth';
 
 // --- Mock Dependencies ---
 vi.mock('jwt-decode');
@@ -34,7 +35,7 @@ describe('getTokenExpirationTimeMs', () => {
       // Arrange: Set up the mock to return a future expiration time
       const futureExpSeconds = MOCK_FUTURE_TIMESTAMP_SEC; // Expires in 1 hour
       mockedJwtDecode.mockReturnValue({ exp: futureExpSeconds } as JwtPayload);
-      const token = 'valid-token-not-expired';
+      const token = FAKE_TOKEN;
 
       // Act
       const result = getTokenExpirationTimeMs(token);
@@ -48,7 +49,7 @@ describe('getTokenExpirationTimeMs', () => {
       // Arrange: Set up the mock to return expiration exactly matching current time
       const exactExpSeconds = MOCK_CURRENT_TIMESTAMP_SEC;
       mockedJwtDecode.mockReturnValue({ exp: exactExpSeconds } as JwtPayload);
-      const token = 'valid-token-expires-now';
+      const token = FAKE_TOKEN;
 
       // Act
       const result = getTokenExpirationTimeMs(token);
@@ -64,7 +65,7 @@ describe('getTokenExpirationTimeMs', () => {
       // Arrange: Set up the mock to return a past expiration time
       const pastExpSeconds = MOCK_PAST_TIMESTAMP_SEC; // Expired 1 hour ago
       mockedJwtDecode.mockReturnValue({ exp: pastExpSeconds } as JwtPayload);
-      const token = 'valid-token-expired';
+      const token = FAKE_TOKEN;
 
       // Act
       const result = getTokenExpirationTimeMs(token);
@@ -79,7 +80,7 @@ describe('getTokenExpirationTimeMs', () => {
       mockedJwtDecode.mockReturnValue({
         iat: MOCK_CURRENT_TIMESTAMP_SEC,
       } as JwtPayload);
-      const token = 'valid-token-no-exp';
+      const token = FAKE_TOKEN;
 
       // Act
       const result = getTokenExpirationTimeMs(token);
@@ -95,7 +96,7 @@ describe('getTokenExpirationTimeMs', () => {
       mockedJwtDecode.mockImplementation(() => {
         throw decodeError;
       });
-      const token = 'invalid-token-string';
+      const token = FAKE_TOKEN;
 
       // Act
       const result = getTokenExpirationTimeMs(token);

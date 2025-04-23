@@ -12,6 +12,7 @@ import {
 import { useAppDispatch } from '../../../app/hooks';
 import useSyncToken from '../../../hooks/useSyncToken';
 import { setToken } from '../../../features/auth/authSlice';
+import { FAKE_TOKEN } from '../../mocks/data/auth';
 
 // --- Mock Dependencies ---
 vi.mock('../../../app/hooks', () => ({
@@ -74,7 +75,7 @@ describe('useSyncToken', () => {
 
   it('should dispatch setToken when storage event with key "token" is triggered', () => {
     // Arrange
-    const token = 'new-token';
+    const token = FAKE_TOKEN;
     const storageEvent = new StorageEvent('storage', {
       key: 'token',
       newValue: token,

@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import useTokenValidation from '../../../hooks/useTokenValidation';
 import { getTokenExpirationTimeMs } from '../../../utils/auth';
 import { signOut } from '../../../features/auth/authSlice';
+import { FAKE_TOKEN } from '../../mocks/data/auth';
 
 // --- Mock Dependencies ---
 vi.mock('../../../app/hooks', () => ({
@@ -59,7 +60,7 @@ describe('useTokenValidation', () => {
 
   it('should dispatch signOut immediately if token is already expired', () => {
     // Arrange
-    const token = 'expired-token';
+    const token = FAKE_TOKEN;
     mockUseSelector.mockReturnValue(token);
     mockGetTokenExpirationTimeMs.mockReturnValue(0); // Indicate expiration (<= 0)
     mockSignOut.mockReturnValue({ type: 'auth/signOut' });
@@ -75,7 +76,7 @@ describe('useTokenValidation', () => {
 
   it('should schedule signOut with setTimeout if token is valid', () => {
     // Arrange
-    const token = 'valid-token';
+    const token = FAKE_TOKEN;
     const remainingTimeMs = 5000;
     mockUseSelector.mockReturnValue(token);
     mockGetTokenExpirationTimeMs.mockReturnValue(remainingTimeMs);

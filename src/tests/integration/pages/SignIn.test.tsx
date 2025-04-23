@@ -9,8 +9,8 @@ import {
   validateToken,
 } from '../../../utils/auth.ts';
 import { renderWithProviders } from '../../test-utils.tsx';
-import { handlers } from '../../../mocks/handlers.tsx';
-import { FAKE_TOKEN } from '../../../mocks/data/auth.tsx';
+import { handlers } from '../../mocks/handlers.tsx';
+import { FAKE_TOKEN } from '../../mocks/data/auth.ts';
 
 // --- Mock Dependencies ---
 vi.mock(import('../../../utils/auth.ts'), async (importOriginal) => {
