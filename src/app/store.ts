@@ -19,7 +19,8 @@ const rootReducer = combineReducers({
   auth: authReducer,
 });
 
-// Function to create and configure the store
+// Reusable function to create and configure the store,
+// is used to create a store with preloaded state for testing, see tests/test-utils.tsx
 export function setupStore(preloadedState?: Partial<RootState>) {
   return configureStore({
     reducer: rootReducer,
