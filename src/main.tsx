@@ -5,6 +5,7 @@ import { store } from './app/store.ts';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { AppRoutes } from './routes/AppRoutes.tsx';
+import './styles/index.scss';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
