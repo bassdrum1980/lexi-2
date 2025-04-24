@@ -20,4 +20,7 @@ export default defineConfig({
       exclude: ['src/**/*.test.{ts,tsx}', 'src/setupTests.ts'],
     },
   },
+  server: {
+    port: 7000,
+  },
 });
