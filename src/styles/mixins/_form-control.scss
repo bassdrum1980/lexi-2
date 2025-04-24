@@ -1,0 +1,69 @@
+@mixin form-control {
+  @include font-content;
+  @include font-size-content;
+  border-radius: $border-radius-small;
+  display: block;
+  width: 100%;
+  padding: $spacing-px-12 $spacing-px-16;
+  box-sizing: border-box;
+  font-weight: $font-weight-regular;
+  line-height: $line-height-28;
+  color: var(--gray1000);
+  caret-color: var(--gray1000);
+  border: solid $border-size-1 $border-color;
+  background-color: var(--gray100);
+}
+
+@mixin form-control--placeholder {
+  &::placeholder {
+    color: var(--gray500);
+  }
+}
+
+@mixin form-control--focus {
+  &:focus {
+    border-color: var(--gray500);
+    outline: none;
+  }
+}
+
+@mixin form-control--invalid {
+  &--invalid {
+    color: map.get($color-danger, 700);
+    caret-color: map.get($color-danger, 700);
+    border: solid $border-size-1 $border-color--danger;
+    background-color: map.get($color-danger, 50);
+
+    &:focus {
+      border-color: map.get($color-danger, 500);
+    }
+  }
+}
+
+@mixin form-input--rounded {
+  padding-left: $spacing-px-20;
+  padding-right: $spacing-px-20;
+  border-radius: px-to-rem(9999px);
+}
+
+@mixin form-input--ui {
+  @include font-ui;
+  @include font-size-ui;
+  //letter-spacing: $letter-spacing-05;
+}
+
+@mixin form-input--noborder {
+  border: none;
+}
+
+@mixin form-input--white {
+  background-color: #fff;
+}
+
+@mixin form-input--bold {
+  font-weight: $font-weight-bold;
+
+  &::placeholder {
+    font-weight: $font-weight-regular;
+  }
+}

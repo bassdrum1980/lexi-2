@@ -1,0 +1,263 @@
+@use 'sass:color';
+@use 'sass:map';
+@import './functions.scss';
+
+/*
+  Layout
+*/
+
+// Spacings
+$grid-size: px-to-rem(8px);
+$spacing-px-2: 0.25 * $grid-size;
+$spacing-px-4: 0.5 * $grid-size;
+$spacing-px-6: 0.75 * $grid-size;
+$spacing-px-8: 1 * $grid-size;
+$spacing-px-10: 1.25 * $grid-size;
+$spacing-px-12: 1.5 * $grid-size;
+$spacing-px-16: 2 * $grid-size;
+$spacing-px-20: 2.5 * $grid-size;
+$spacing-px-24: 3 * $grid-size;
+$spacing-px-28: 3.5 * $grid-size;
+$spacing-px-32: 4 * $grid-size;
+$spacing-px-40: 5 * $grid-size;
+$spacing-px-48: 6 * $grid-size;
+$spacing-px-56: 7 * $grid-size;
+$spacing-px-64: 8 * $grid-size;
+$spacing-px-96: 12 * $grid-size;
+$spacing-px-128: 16 * $grid-size;
+$spacing-px-192: 24 * $grid-size;
+$spacing-px-256: 32 * $grid-size;
+$spacing-px-384: 48 * $grid-size;
+
+// Paddings
+$grid-padding: $spacing-px-20;
+$grid-padding--narrow: $spacing-px-16;
+$grid-optical-compensation: -8.5vh;
+$grid-optical-compensation--s: -4.25vh;
+
+// Z-indexes
+$z-index-header: 100;
+$z-index-modal: 1000;
+
+// Header heights
+$header-height: 4rem;
+$header-height--min: 2.5rem;
+
+/*
+  Colors
+
+  Most of the color palettes are theme specific.
+  We store them in sass maps, translate
+  to sets of css custom properties and attach to 
+  the '.container' element (see <ThemeProvider /> component).
+
+  Naming convention — 
+  $color-colorname--theme-name => $color-gray--study
+*/
+
+// Shared colors
+$color-gray: (
+  100: #f5f9fc,
+  200: #e4e9eb,
+  300: #cbd5d9,
+  400: #9aabb1,
+  500: #7b8e94,
+  600: #61757c,
+  700: #52666d,
+  800: #3e5259,
+  900: #32454b,
+  1000: #1b2529,
+);
+$color-primary: (
+  1000: #034f69,
+);
+$color-danger: (
+  50: #ffebeb,
+  100: #ffe3e3,
+  200: #ffbdbd,
+  300: #ff9b9b,
+  400: #f86a6a,
+  500: #ef4e4e,
+  600: #e12d39,
+  700: #cf1124,
+  800: #ab091e,
+  900: #8a041a,
+  1000: #610316,
+);
+$color-warning: (
+  100: #fffbea,
+  200: #fff3c4,
+  300: #fce588,
+  400: #fadb5f,
+  500: #f7c948,
+  600: #f0b429,
+  700: #de911d,
+  800: #cb6e17,
+  900: #b44d12,
+  1000: #8d2b0b,
+);
+$color-info: (
+  100: #e1fcf8,
+  200: #c1fef6,
+  300: #92fdf2,
+  400: #62f4eb,
+  500: #3ae7e1,
+  600: #1cd4d4,
+  700: #0fb5ba,
+  800: #099aa4,
+  900: #07818f,
+  1000: #05606e,
+);
+$color-pill: (
+  'noun': #890dbd,
+  'pronoun': #b60785,
+  'interjection': #b60785,
+  'preposition': #019ed0,
+  'conjunction': #c80e0e,
+  'verb': #0052af,
+  'adverb': #049f96,
+  'adjective': #bc4807,
+  'various': #b89300,
+);
+$color-flame: (
+  100: #ff9960,
+  1000: #ff5c00,
+);
+$color-gradient: (
+  'flame':
+    linear-gradient(
+      175deg,
+      map.get($color-flame, 100),
+      map.get($color-flame, 1000)
+    ),
+);
+
+// 'Default' theme
+$color-gray--default: (
+  100: color.adjust(map.get($color-gray, 100), $hue: 7),
+  200: color.adjust(map.get($color-gray, 200), $hue: 14),
+  300: color.adjust(map.get($color-gray, 300), $hue: 14),
+  400: color.adjust(map.get($color-gray, 400), $hue: 14),
+  500: color.adjust(map.get($color-gray, 500), $hue: 14),
+  600: color.adjust(map.get($color-gray, 600), $hue: 14),
+  700: color.adjust(map.get($color-gray, 700), $hue: 14),
+  800: color.adjust(map.get($color-gray, 800), $hue: 14),
+  900: color.adjust(map.get($color-gray, 900), $hue: 14),
+  1000: color.adjust(map.get($color-gray, 1000), $hue: 14),
+);
+$color-primary--default: (
+  1000: #136fd1,
+);
+$color-gradient--default: (
+  'primary':
+    linear-gradient(
+      355deg,
+      #126fd1 2.51%,
+      #1d92e6 32.4%,
+      #25a3eb 59.83%,
+      #1c92e6 81.88%,
+      #126fd1 96.58%
+    ),
+  'primary--light': linear-gradient(175deg, #ffffff 0%, #f7fafc 100%),
+);
+$color-logo--default: (
+  100: #ffffff,
+  200: #a7ccf4,
+  300: #73abe7,
+);
+
+// 'Search' theme
+$color-gray--search: (
+  100: color.adjust(map.get($color-gray, 100), $hue: 80),
+  200: color.adjust(map.get($color-gray, 200), $hue: 87),
+  300: color.adjust(map.get($color-gray, 300), $hue: 87),
+  400: color.adjust(map.get($color-gray, 400), $hue: 87),
+  500: color.adjust(map.get($color-gray, 500), $hue: 87),
+  600: color.adjust(map.get($color-gray, 600), $hue: 87),
+  700: color.adjust(map.get($color-gray, 700), $hue: 87),
+  800: color.adjust(map.get($color-gray, 800), $hue: 87),
+  900: color.adjust(map.get($color-gray, 900), $hue: 87),
+  1000: color.adjust(map.get($color-gray, 1000), $hue: 87),
+);
+$color-primary--search: (
+  1000: #b21ce8,
+);
+$color-gradient--search: (
+  'primary':
+    linear-gradient(
+      355deg,
+      #b21ce8 2.51%,
+      #c923eb 32.4%,
+      #de32ed 59.83%,
+      #c923eb 81.88%,
+      #b21ce8 96.58%
+    ),
+  'primary--light': linear-gradient(175deg, #ffffff 0%, #f9f5fa 100%),
+);
+$color-logo--search: (
+  100: #ffffff,
+  200: #e4b0f7,
+  300: #ce70f1,
+);
+
+// TYPOGRAPHY
+//$font-size-base: 1rem;
+
+// UI typescale
+$font-size-ui-11: px-to-rem(11px);
+$font-size-ui-12: px-to-rem(12px);
+$font-size-ui-14: px-to-rem(14px);
+$font-size-ui-16: px-to-rem(16px);
+$font-size-ui-20: px-to-rem(20px);
+$font-size-ui-60: px-to-rem(60px);
+
+// Content typescale
+$font-size-content-15: px-to-rem(15px);
+$font-size-content-20: px-to-rem(20px);
+$font-size-content-24: px-to-rem(24px);
+$font-size-content-28: px-to-rem(28px);
+$font-size-content-36: px-to-rem(36px);
+
+// Fonts
+$font-family-ui: -apple-system, BlinkMacSystemFont, Roboto, 'Segoe UI',
+  'Noto Sans', Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+$font-family-content: 'Merriweather', serif;
+
+// Font-weight
+$font-weight-thin: 200;
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-bold: 600;
+
+// Font-style
+$font-style-cursive: italic;
+
+// Line-height
+$line-height-12: px-to-rem(12px);
+$line-height-14: px-to-rem(14px);
+$line-height-16: px-to-rem(16px);
+$line-height-20: px-to-rem(20px);
+$line-height-24: px-to-rem(24px);
+$line-height-28: px-to-rem(28px);
+$line-height-32: px-to-rem(32px);
+$line-height-36: px-to-rem(36px);
+$line-height-40: px-to-rem(40px);
+$line-height-44: px-to-rem(44px);
+$line-height-60: px-to-rem(60px);
+
+// Letter-spacing
+$letter-spacing-05: px-to-rem(0.5px);
+
+// BORDERS
+// Border-size
+$border-size-1: px-to-rem(1px);
+
+// Border-color
+$border-color: var(--gray300);
+$border-color--danger: map.get($color-danger, 300);
+$border-color--em: var(--gray1000);
+$border-color--primary: var(--primary1000);
+
+// Border-radius
+$border-radius-small: $spacing-px-4;
+$border-radius-medium: $spacing-px-8;
