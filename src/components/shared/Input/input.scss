@@ -1,0 +1,30 @@
+@use 'sass:map';
+@import '@styles/variables.scss';
+@import '@styles/utility-mixins/index.scss';
+@import '@styles/mixins/index.scss';
+
+.form-input {
+  @include form-control;
+  @include form-control--placeholder;
+  @include form-control--focus;
+  @include form-control--invalid;
+
+  &--rounded {
+    @include form-input--rounded;
+  }
+  &--font-ui {
+    @include form-input--ui;
+  }
+
+  &--noborder {
+    @include form-input--noborder;
+  }
+
+  &--white {
+    @include form-input--white;
+  }
+
+  &--bold {
+    @include form-input--bold;
+  }
+}
