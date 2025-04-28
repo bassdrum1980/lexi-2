@@ -1,11 +1,16 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // TODO: add resolve/alias to use absolute imports
-  // TODO: add sass support
+  resolve: {
+    alias: {
+      '@': '/src',
+      '@styles': path.resolve(__dirname, 'src/styles'),
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
