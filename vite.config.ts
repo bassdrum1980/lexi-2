@@ -26,6 +26,13 @@ export default defineConfig({
     },
   },
   server: {
-    port: 7000,
+    port: 7001,
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        silenceDeprecations: ['import', 'global-builtin'],
+      },
+    },
   },
 });
