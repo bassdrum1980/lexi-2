@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { jwtDecode, type JwtPayload } from 'jwt-decode';
-import { validateToken } from '../../../utils/auth';
+import { isTokenValid } from '../../../utils/auth';
 import {
   MOCK_CURRENT_DATE,
   MOCK_FUTURE_TIMESTAMP_SEC,
@@ -13,7 +13,7 @@ vi.mock('jwt-decode');
 // Get typed mock function reference
 const mockedJwtDecode = vi.mocked(jwtDecode);
 
-describe('validateToken', () => {
+describe('isTokenValid', () => {
   beforeEach(() => {
     // Use fake timers before each test
     vi.useFakeTimers();
@@ -29,7 +29,7 @@ describe('validateToken', () => {
   });
 
   describe('when the token is valid', () => {
-    it('should return the token when it is not expired', () => {
+    it('should return true when the token is not expired', () => {
       const token = FAKE_TOKEN;
 
       // Arrange
@@ -39,16 +39,16 @@ describe('validateToken', () => {
       } as JwtPayload);
 
       // Act
-      const result = validateToken(token);
+      const result = isTokenValid(token);
 
       // Assert
-      expect(result).toBe(token); // Uncommented this assertion
+      expect(result).toBeTruthy();
       expect(mockedJwtDecode).toHaveBeenCalledWith(token);
     });
   });
 
   describe('when the token is not valid', () => {
-    it('should return null when the token is expired', () => {
+    it('should return false when the token is expired', () => {
       const token = FAKE_TOKEN;
 
       // Arrange
@@ -58,22 +58,22 @@ describe('validateToken', () => {
       } as JwtPayload);
 
       // Act
-      const result = validateToken(token);
+      const result = isTokenValid(token);
 
       // Assert
-      expect(result).toBeNull();
+      expect(result).toBeFalsy();
       expect(mockedJwtDecode).toHaveBeenCalledWith(token);
     });
 
-    it('should return null when the token is null', () => {
+    it('should return false when the token is null', () => {
       // Arrange
       const nullToken = null;
 
       // Act
-      const result = validateToken(nullToken);
+      const result = isTokenValid(nullToken);
 
       // Assert
-      expect(result).toBeNull();
+      expect(result).toBeFalsy();
       expect(mockedJwtDecode).not.toHaveBeenCalled();
     });
   });

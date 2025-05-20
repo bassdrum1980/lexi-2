@@ -33,6 +33,7 @@ export const getTokenExpirationTimeMs = (token: string) => {
   }
 };
 
-export const validateToken = (token: string | null) => {
-  return token && !isTokenExpired(token) ? token : null;
+export const isTokenValid = (token: string | null): boolean => {
+  if (!token) return false;
+  return isTokenExpired(token) ? false : true;
 };

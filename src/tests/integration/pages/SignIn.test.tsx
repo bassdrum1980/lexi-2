@@ -4,10 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { Mock } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import { AppRoutes } from '../../../routes/AppRoutes.tsx';
-import {
-  getTokenExpirationTimeMs,
-  validateToken,
-} from '../../../utils/auth.ts';
+import { getTokenExpirationTimeMs, isTokenValid } from '../../../utils/auth.ts';
 import { renderWithProviders } from '../../test-utils.tsx';
 import { handlers } from '../../mocks/handlers.tsx';
 import { FAKE_TOKEN } from '../../mocks/data/auth.ts';
@@ -18,13 +15,13 @@ vi.mock(import('../../../utils/auth.ts'), async (importOriginal) => {
   return {
     ...actual,
     getTokenExpirationTimeMs: vi.fn(),
-    validateToken: vi.fn(),
+    isTokenValid: vi.fn(),
   };
 });
 
 // Assign mocks from the mocked modules
 let mockGetTokenExpirationTimeMs: Mock;
-let mockValidateToken: Mock;
+let mockIsTokenValid: Mock;
 
 // Setting up the server
 const server = setupServer(...handlers);
@@ -39,14 +36,13 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-  // Mock the getTokenExpirationTimeMs function to return a positive value
   mockGetTokenExpirationTimeMs = getTokenExpirationTimeMs as unknown as Mock;
-  mockValidateToken = validateToken as unknown as Mock;
+  mockIsTokenValid = isTokenValid as unknown as Mock;
 });
 
 afterEach(() => {
   vi.clearAllMocks();
-  // Reset any runtime request handlers we may add during the tests.
+  // Reset any runtime request handlers we may add during the tests
   server.resetHandlers();
 });
 
@@ -66,9 +62,8 @@ it('renders home page after signing in', async () => {
   // Arrange
   // Set token expiration so useTokenValidation hook will not trigger immediately upon signing in
   mockGetTokenExpirationTimeMs.mockReturnValue(remainingTimeMs);
-  // Mock the validateToken function to return a valid token
-  // since authListenerMiddleware and authSlice validate tokens before saving
-  mockValidateToken.mockReturnValue(FAKE_TOKEN);
+  // Make the isTokenValid function to return true
+  mockIsTokenValid.mockReturnValue(true);
   renderWithProviders(
     <MemoryRouter initialEntries={[initialPath]}>
       <AppRoutes />
@@ -96,5 +91,5 @@ it('renders home page after signing in', async () => {
   expect(await screen.findByTestId(expectedPage)).toBeInTheDocument();
   // And just to make sure that mock functions were called with proper arguments
   expect(mockGetTokenExpirationTimeMs).toHaveBeenCalledWith(FAKE_TOKEN);
-  expect(mockValidateToken).toHaveBeenCalledWith(FAKE_TOKEN);
+  expect(mockIsTokenValid).toHaveBeenCalledWith(FAKE_TOKEN);
 });
