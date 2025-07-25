@@ -1,21 +1,20 @@
 import { useRef } from 'react';
-import { handleSubmitType } from '../../pages/articles/Articles';
+import { useCreateArticleMutation } from '../../services/lexiApiSlice';
+import { IArticle } from '../../types/articles';
 
 // IMPORTANT: this is a simplified version of the CreateArticleForm component.
 // for dev purposes only, no validation, no error handling, no accessibility.
 
-interface CreateArticleFormProps {
-  handleSubmit: handleSubmitType;
-}
-
-function CreateArticleForm({ handleSubmit }: CreateArticleFormProps) {
-  const formRef = useRef(null);
+function CreateArticle() {
+  const [createArticle, { isLoading, error }] = useCreateArticleMutation();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     if (!formRef.current) return;
 
-    const data = new FormData(formRef.current);
-    const article = {
+    const form = formRef.current;
+    const data = new FormData(form);
+    const article: IArticle = {
       title: String(data.get('title')),
       content: String(data.get('content')),
       tags: String(data.get('tags'))
@@ -24,11 +23,21 @@ function CreateArticleForm({ handleSubmit }: CreateArticleFormProps) {
       slug: String(data.get('slug')),
     };
 
-    handleSubmit(event, article);
+    event.preventDefault();
+    createArticle({ article });
+
+    form.reset();
   };
 
+  if (isLoading) {
+    return <div data-testid="create-article-form">Creating article...</div>;
+  }
+  if (error) {
+    return <div data-testid="create-article-form">Error creating article</div>;
+  }
+
   return (
-    <>
+    <div data-testid="create-article-form">
       <h1>Create Article</h1>
       <form
         onSubmit={onSubmit}
@@ -76,8 +85,8 @@ function CreateArticleForm({ handleSubmit }: CreateArticleFormProps) {
           Create Article
         </button>
       </form>
-    </>
+    </div>
   );
 }
 
-export default CreateArticleForm;
+export default CreateArticle;
