@@ -10,20 +10,26 @@ function CreateArticle() {
   const formRef = useRef<HTMLFormElement>(null);
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!formRef.current) return;
 
     const form = formRef.current;
     const data = new FormData(form);
+    const tagsValue = data.get('tags');
+
     const article: IArticle = {
       title: String(data.get('title')),
       content: String(data.get('content')),
-      tags: String(data.get('tags'))
-        .split(',')
-        .map((tag) => tag.trim()),
+      tags: tagsValue // Handles empty and null (if 'tags' field doesn't exist) input
+        ? String(tagsValue)
+            .split(',')
+            .map((tag) => tag.trim())
+            .filter(Boolean) // Removes empty strings
+        : [],
       slug: String(data.get('slug')),
     };
 
-    event.preventDefault();
     createArticle({ article });
 
     form.reset();
