@@ -18,8 +18,8 @@ const articlesSlice = createSlice({
   extraReducers: (builder) => {
     builder.addMatcher(
       lexiApi.endpoints.createArticle.matchFulfilled,
-      (state, payload) => {
-        const article = payload.payload.article;
+      (state, action) => {
+        const article = action.payload.article;
         state.articles.push(article);
       }
     );
