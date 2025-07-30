@@ -5,6 +5,7 @@ import {
   type Middleware,
 } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
+import articlesReducer from '../features/articles/articlesSlice';
 import { lexiApi } from '../services/lexiApiSlice';
 import { authListenerMiddleware } from '../middleware/authListener';
 
@@ -17,6 +18,7 @@ if (import.meta.env.MODE === 'development') {
 const rootReducer = combineReducers({
   [lexiApi.reducerPath]: lexiApi.reducer,
   auth: authReducer,
+  articles: articlesReducer,
 });
 
 // Reusable function to create and configure the store,

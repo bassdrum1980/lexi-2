@@ -1,9 +1,10 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ProtectedRoute } from '../components/shared/ProtectedRoute/';
 import SignInPage from '../pages/auth/SignIn.tsx';
+import ArticlesPage from '../pages/articles/Articles.tsx';
 import HomePage from '../pages/home/Home.tsx';
 import App from '../App.tsx';
-import { signinURL } from './index.ts';
+import { signinURL, articlesURL } from './index.ts';
 
 export const AppRoutes = () => {
   return (
@@ -17,6 +18,10 @@ export const AppRoutes = () => {
           <Route
             index
             element={<HomePage />}
+          />
+          <Route
+            path={articlesURL}
+            element={<ArticlesPage />}
           />
         </Route>
 
